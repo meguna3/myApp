@@ -34,7 +34,7 @@ import { StyleSheet, Text, View, Image,TouchableOpacity} from 'react-native';
       setcalcProcess("");
       setNumlist([])
       setX(0);
-      console.log(numlist);
+      
     };
 
     const clearValue = () => {
@@ -46,15 +46,14 @@ import { StyleSheet, Text, View, Image,TouchableOpacity} from 'react-native';
     const resultNum = () => {
       //数字ならtrue
       //数字出ないならfalseにする
-      console.log("反応してるよー")
+      
       if( calcProcess != ""){
         console.log(calcProcess)
         if(!isNaN(calcProcess.slice(-1))){
-          console.log("計算してるよー");
           //2023年５月３１日バグ残してます☝//
           for(const partNum of numlist){
             calcNum = calcNum + partNum;
-            console.log(calcNum);
+          
          }
           calcNum = calcNum + x;
           setX(calcNum);
