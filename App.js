@@ -8,12 +8,12 @@ import { StyleSheet, Text, View, Image,TouchableOpacity} from 'react-native';
     const [x,setX] = useState(0);
     let calcNum = 0;
     console.log(numlist);
+    let [calcSymbol,setCalcSymbol] =  useState([]);
     const [calcProcess,setcalcProcess] = useState("");
     //使う関数
 
     const calculation = (input) => {
       setcalcProcess(calcProcess + String(input));
-      
     }
 
     const onNum = (input) => {
@@ -23,16 +23,27 @@ import { StyleSheet, Text, View, Image,TouchableOpacity} from 'react-native';
    
 
     const addValue = (input) => {
-      calculation(input);
       if(x !== 0){
+        calculation(input);
+        setCalcSymbol([...calcSymbol,input]);
         setNumlist([...numlist,x]);
         setX(0);
       }
     };
 
+    const pullValue = (input) => {
+      if(x !== 0){
+        calculation(input);
+        setCalcSymbol([...calcSymbol,input]);
+        setNumlist([...numlist,x]);
+        setX(0);
+      }
+    }
+
     const allClearValue = () => {
       setcalcProcess("");
       setNumlist([])
+      setCalcSymbol([]);
       setX(0);
       
     };
@@ -46,19 +57,30 @@ import { StyleSheet, Text, View, Image,TouchableOpacity} from 'react-native';
     const resultNum = () => {
       //数字ならtrue
       //数字出ないならfalseにする
-      
+      console.log("メグナはこれだよー："+calcSymbol);
       if( calcProcess != ""){
-        console.log(calcProcess)
         if(!isNaN(calcProcess.slice(-1))){
-          //2023年５月３１日バグ残してます☝//
-          for(const partNum of numlist){
-            calcNum = calcNum + partNum;
-          
+          for(let i=0; i<numlist.length;i++){
+              partNum = numlist[i];
+           //(let i=0;i<calcSymbol.length;i++)
+              console.log("数字:"+partNum);
+              console.log("記号:"+calcSymbol[i]);
+            //}
+            if (calcSymbol[i] == "+"){
+              calcNum = calcNum + partNum;
+            }else if(calcSymbol[i]== "-"){
+              calcNum = calcNum - partNum;
+            }else if(calcSymbol[i] == "*"){
+              calcNum = calcNum * partNum;
+            }else if(calcSymbol[i] == "/"){
+              calcNum = calcNum / partNum;
+            }
          }
           calcNum = calcNum + x;
           setX(calcNum);
           setNumlist([]);
           setcalcProcess(String(calcNum));
+          setCalcSymbol([]);
        }
      }
    }
@@ -147,6 +169,16 @@ import { StyleSheet, Text, View, Image,TouchableOpacity} from 'react-native';
               </Text>
           </TouchableOpacity>
 
+      </View>
+
+      <View style={styles.box}>
+        <TouchableOpacity style={styles.numbox} onPress={() => pullValue("-")}>
+        <Text style={styles.text}>
+          -
+        </Text>
+        </TouchableOpacity>
+       
+        
       </View>
       
       <View style={styles.box}>
